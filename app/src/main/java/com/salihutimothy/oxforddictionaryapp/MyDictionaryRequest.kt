@@ -1,7 +1,9 @@
 package com.salihutimothy.oxforddictionaryapp
 
+import android.content.Context
 import android.os.AsyncTask
 import android.provider.ContactsContract.CommonDataKinds.Website.URL
+import android.widget.Toast
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
@@ -10,12 +12,13 @@ import java.net.URL
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-class MyDictionaryRequest : AsyncTask<String, Int, String>() {
+class MyDictionaryRequest(private val context: Context) : AsyncTask<String, Int, String>() {
 
     val app_id = "aaa664ff"
     val app_key = "ded32974b64492af1217ff773d22bdd3"
+    private var myUrl: String? = null
 
-    private fun dictionaryEntries(): String? {
+    private fun dictionaryEntries(): String {
         val language = "en-gb"
         val word = "Ace"
         val fields = "pronunciations"
@@ -25,8 +28,11 @@ class MyDictionaryRequest : AsyncTask<String, Int, String>() {
     }
 
     override fun doInBackground(vararg params: String?): String {
+
+        myUrl = params[0]
+
         return try {
-            val url = URL(params[0])
+            val url = URL(myUrl)
             val urlConnection: HttpsURLConnection = url.openConnection() as HttpsURLConnection
             urlConnection.setRequestProperty("Accept", "application/json")
             urlConnection.setRequestProperty("app_id", app_id)
@@ -50,10 +56,12 @@ class MyDictionaryRequest : AsyncTask<String, Int, String>() {
             e.printStackTrace()
             e.toString()
         }
-
     }
 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
+
+        Toast.makeText(context, result, Toast.LENGTH_LONG).show()
+
     }
 }
