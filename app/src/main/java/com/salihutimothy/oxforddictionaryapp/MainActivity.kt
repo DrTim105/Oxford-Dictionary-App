@@ -19,13 +19,16 @@ class MainActivity : AppCompatActivity() {
         findButton = findViewById(R.id.button)
 
         findButton.setOnClickListener {
-            val myDictionaryRequest = MyDictionaryRequest(this)
+            val myDictionaryRequest = MyDictionaryRequest(
+            )
             myDictionaryRequest.execute(url)
         }
     }
 
     private fun requestApiButtonClick(v: View) {
 
+        val myDictionaryRequest = MyDictionaryRequest()
+        myDictionaryRequest.execute(url)
     }
 
     private fun dictionaryEntries(): String? {
